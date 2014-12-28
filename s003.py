@@ -5,6 +5,7 @@ table = [
   ['2680', '134567890'],
   ['2356890']
 ]
+e, d, p = ' ', '-', '|'
 
 while True:
   s, n = raw_input().split(' ')
@@ -15,25 +16,14 @@ while True:
     t = table[row]
     if len(t) == 1:
       for digit in n:
-        print (' '),
-        if digit in t[0]:
-          print ('-'*s),
-        else:
-          print (' '*s),
-        print (' '),
-        print (' '),
-      print('')
+        c = d if digit in t[0] else e
+        print (' %s  '%(c*s)),
+      print
     else:
       for r in range(0, s):
         for digit in n:
-          if digit in t[0]:
-            print ('|'),
-          else:
-            print (' '),
-          print (' '*s),
-          if digit in t[1]:
-            print ('|'),
-          else:
-            print (' '),
-          print (' '),
-        print('')
+          c1 = p if digit in t[0] else e
+          c2 = p if digit in t[1] else e
+          print('%s%s%s '%(c1, e*s, c2)),
+        print
+  print
