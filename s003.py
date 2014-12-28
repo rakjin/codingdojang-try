@@ -22,8 +22,7 @@ while True:
     else:
       for r in range(0, s):
         for digit in n:
-          c1 = p if digit in t[0] else e
-          c2 = p if digit in t[1] else e
-          print('%s%s%s '%(c1, e*s, c2)),
+          c = [p if digit in x else e for x in t]
+          print('%s%s%s '%(c[0], e*s, c[1])),
         print
   print
