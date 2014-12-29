@@ -67,7 +67,6 @@ def visit(node, path):
 
 
 if __name__ == '__main__':
-
   raw = []
   while True:
     try:
@@ -76,7 +75,7 @@ if __name__ == '__main__':
         raw.append(line)
       else:
         break
-    except (EOFError):
+    except EOFError:
       break
   raw = '\n'.join(raw)
 
@@ -84,5 +83,4 @@ if __name__ == '__main__':
 
   path = []
   count = visit(first_node, path)
-
   print (count)

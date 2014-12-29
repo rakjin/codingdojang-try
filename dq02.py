@@ -40,13 +40,14 @@ def trim_tail(string, ellipsis, desired_len):
   result.append(ellipsis)
   return ''.join(result)
 
+
 if __name__ == '__main__':
   while True:
     try:
       raw = unicode(raw_input(), 'utf8')
       raw = raw.split('/')
       string, ellipsis, desired_len = raw[0], raw[1], int(raw[2])
-    except EOFError, e:
+    except EOFError:
       break
     
     print(trim_tail(string, ellipsis, desired_len))
