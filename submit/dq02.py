@@ -57,12 +57,11 @@ def parse_and_get_first_node(raw):
 def visit(node, path):
   if node in path:
     return 0
-  path.append(node)
   if node.is_destination:
     # found possible path
-    path.remove(node)
     return 1
   count = 0
+  path.append(node)
   for adjacent in node.adjacents:
     count += visit(adjacent, path)
   # dead end
