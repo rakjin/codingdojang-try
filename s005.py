@@ -1,1 +1,1 @@
-print(sum([(x%3*x%5==0)*x for x in range(1,1000)]))
+print(sum(set(range(3,1000,3)+range(5,1000,5))))
