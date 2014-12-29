@@ -1,0 +1,1 @@
+print(sum([(x%3*x%5==0)*x for x in range(1,1000)]))
