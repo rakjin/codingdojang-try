@@ -1,5 +1,5 @@
 
-class Node:
+class Node(object):
   def __init__(self, altitude):
     self.altitude = altitude
     self.adjacents = []
@@ -15,9 +15,6 @@ class Node:
 
   def is_visitable(self, from_):
     return (from_.altitude > self.altitude)
-
-  def __repr__(self):
-    return '<Node altitude=%d>' % self.altitude
 
 
 def parse_and_get_first_node(raw):
@@ -44,11 +41,11 @@ def parse_and_get_first_node(raw):
         node.add_adjacent(upper)
         upper.add_adjacent(node)
 
-  flat = [item for sublist in rows for item in sublist] # googled how to
-  [node.remove_unvisitable_adjacents() for node in flat]
+  flattened = [item for sublist in rows for item in sublist] # googled how to
+  [node.remove_unvisitable_adjacents() for node in flattened]
 
-  first_node = flat[0]
-  last_node = flat[-1]
+  first_node = flattened[0]
+  last_node = flattened[-1]
   last_node.is_destination = True
 
   return first_node
