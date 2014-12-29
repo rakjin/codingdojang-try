@@ -1,10 +1,14 @@
 #-*- coding: utf-8 -*-
 import re
 
-pattern = re.compile('(&#\d+;)|([가-힣]{2})')
+kor_len = len('가') # 2 on win and 3 on osx, ...
+pattern = re.compile('&#\d+;|[가-힣ㄱ-ㅣ]{%d}' % kor_len)
 
 while True:
-  raw = raw_input()
+  try:
+    raw = raw_input()
+  except (EOFError):
+    break
   if not raw:
     break
 
@@ -17,17 +21,17 @@ while True:
 
   desired_len -= len(ellipsis)
   result = []
-  i = 0
-  while i < desired_len:
+  count = 0
+  while count < desired_len:
     match = pattern.match(string)
     if match:
-      if i+2 <= desired_len:
+      if count+2 <= desired_len:
         result.append(match.group())
       string = string[match.end():]
-      i += 2
+      count += 2
     else:
       result.append(string[:1])
       string = string[1:]
-      i += 1
+      count += 1
   result.append(ellipsis)
   print(''.join(result))
