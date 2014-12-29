@@ -1,37 +1,91 @@
-#-*- coding: utf-8 -*-
-import re
 
-kor_len = len('가') # 2 on win and 3 on osx, ...
-pattern = re.compile('&#\d+;|[가-힣ㄱ-ㅣ]{%d}' % kor_len)
+class Node:
+  def __init__(self, altitude):
+    self.altitude = altitude
+    self.adjacents = []
+    self.is_destination = False
 
-while True:
-  try:
-    raw = raw_input()
-  except (EOFError):
-    break
-  if not raw:
-    break
+  def add_adjacent(self, node):
+    self.adjacents.append(node)
 
-  raw = raw.split('/')
-  string, ellipsis, desired_len = raw[0], raw[1], int(raw[2])
-  
-  if len(string) <= desired_len:
-    print(string)
-    continue
+  def remove_unvisitable_adjacents(self):
+    visitables = \
+      filter(lambda x: x.is_visitable(from_=self), self.adjacents)
+    self.adjacents = visitables
 
-  desired_len -= len(ellipsis)
-  result = []
+  def is_visitable(self, from_):
+    return (from_.altitude > self.altitude)
+
+  def __repr__(self):
+    return '<Node altitude=%d>' % self.altitude
+
+
+def parse_and_get_first_node(raw):
+  rows = raw.splitlines()
+
+  dimension = rows.pop(0)
+  dimension = dimension.split(' ')
+  height = int(dimension[0])
+  width = int(dimension[1])
+
+  for y in range(0, height):
+    row = rows[y] = rows[y].split(' ')
+    for x in range(0, width):
+      altitude = row[x] = int(row[x])
+      row[x] = node = Node(altitude)
+
+      if x > 0:
+        left = row[x-1]
+        node.add_adjacent(left)
+        left.add_adjacent(node)
+
+      if y > 0:
+        upper = rows[y-1][x]
+        node.add_adjacent(upper)
+        upper.add_adjacent(node)
+
+  flat = [item for sublist in rows for item in sublist] # googled how to
+  [node.remove_unvisitable_adjacents() for node in flat]
+
+  first_node = flat[0]
+  last_node = flat[-1]
+  last_node.is_destination = True
+
+  return first_node
+
+# visit recursively and return possible paths' count within its trials
+def visit(node, path):
+  if node in path:
+    return 0
+  if node.is_destination:
+    # found possible path
+    return 1
   count = 0
-  while count < desired_len:
-    match = pattern.match(string)
-    if match:
-      if count+2 <= desired_len:
-        result.append(match.group())
-      string = string[match.end():]
-      count += 2
-    else:
-      result.append(string[:1])
-      string = string[1:]
-      count += 1
-  result.append(ellipsis)
-  print(''.join(result))
+  path.append(node)
+  for adjacent in node.adjacents:
+    count += visit(adjacent, path)
+  # dead end
+  path.pop()
+  return count
+
+
+if __name__ == '__main__':
+
+  raw = []
+  while True:
+    try:
+      line = raw_input()
+      if line:
+        raw.append(line)
+      else:
+        break
+    except (EOFError):
+      break
+  raw = '\n'.join(raw)
+
+  first_node = parse_and_get_first_node(raw)
+
+  path = []
+  count = visit(first_node, path)
+
+  print (count)
