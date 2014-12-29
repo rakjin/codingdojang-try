@@ -14,7 +14,7 @@ class Node:
     self.adjacents = visitables
 
   def is_visitable(self, from_):
-    return (from_.altitude >= self.altitude)
+    return (from_.altitude > self.altitude)
 
   def __repr__(self):
     return '<Node altitude=%d>' % self.altitude
