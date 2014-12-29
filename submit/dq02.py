@@ -29,12 +29,9 @@ if __name__ == '__main__':
   while True:
     try:
       raw = raw_input()
-    except (EOFError):
+      raw = raw.split('/')
+      string, ellipsis, desired_len = raw[0], raw[1], int(raw[2])
+    except:
       break
-    if not raw:
-      break
-
-    raw = raw.split('/')
-    string, ellipsis, desired_len = raw[0], raw[1], int(raw[2])
     
     print(trim_tail(string, ellipsis, desired_len))
