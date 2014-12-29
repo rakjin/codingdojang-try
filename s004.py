@@ -1,7 +1,7 @@
 
 def is_slurpy(s):
   l = len(s)
-  if l < 4:
+  if l < 5:
     return False
   for i in range(2, l-1):
     slimp = s[0:i]
