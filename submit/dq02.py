@@ -65,7 +65,7 @@ def visit(node, path):
   for adjacent in node.adjacents:
     count += visit(adjacent, path)
   # dead end
-  path.remove(node)
+  path.pop()
   return count
 
 
