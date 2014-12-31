@@ -13,6 +13,7 @@ while(<>) {
 		my $node = {
 			"altitude" => $altitude,
 			"adjacents" => [],
+			"is_destination" => 0,
 			};
 		push @row, $node;
 		if ($x > 0) {
@@ -43,4 +44,7 @@ while(<>) {
 	$y++;
 }
 
+my $first_node = $table[0][0];
+my $last_node = $table[-1][-1];
+$last_node->{"is_destination"} = 1;	
 
