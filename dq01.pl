@@ -5,7 +5,7 @@ my ($height, $width) = split / /, <>;
 
 my $y = 0;
 my @table = ();
-while(<>) {
+while (<>) {
   my $x = 0;
   my @row = ();
   for my $altitude (split / /) {
