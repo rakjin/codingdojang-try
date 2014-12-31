@@ -9,8 +9,7 @@ class Node(object):
     self.adjacents.append(node)
 
   def remove_unvisitable_adjacents(self):
-    visitables = \
-      filter(lambda x: x.is_visitable(from_=self), self.adjacents)
+    visitables = [x for x in self.adjacents if x.is_visitable(from_=self)]
     self.adjacents = visitables
 
   def is_visitable(self, from_):
