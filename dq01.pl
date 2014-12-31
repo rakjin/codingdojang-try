@@ -48,3 +48,27 @@ my $first_node = $table[0][0];
 my $last_node = $table[-1][-1];
 $last_node->{"is_destination"} = 1;	
 
+
+sub visit {
+	my $node = shift;
+	my $path = shift;
+
+	if (grep /^$node$/, @{$path}) {
+		return 0;
+	}
+	if ($node->{"is_destination"}) {
+		return 1;
+	}
+	my $count = 0;
+	push @{$path}, $node;
+	for my $adjacent (@{$node->{"adjacents"}}) {
+		$count += visit($adjacent, $path);
+	}
+	pop @{$path};
+	return $count;
+}
+
+
+my $path = [];
+my $count = visit($first_node, $path);
+print ($count);
