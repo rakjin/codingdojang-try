@@ -5,6 +5,7 @@ use strict;
 use warnings;
 
 use Test::More;
+use Encode qw(encode decode);
 
 use constant MULTIBYTE_CHARACTER_SIZE => 2;
 
@@ -38,8 +39,9 @@ sub trim_tail {
 			$output_length += MULTIBYTE_CHARACTER_SIZE;
 		}
 		elsif ($str =~ s/^(((?!($pattern)).)+)//) {
-			push @result, substr($1, 0, $desired_length - $output_length);
-			$output_length += length $1;
+			my $found = substr($1, 0, $desired_length - $output_length);
+			push @result, $found;
+			$output_length += length $found;
 		}
 		else {
 			print "\t\tnot expected\n";
@@ -72,7 +74,11 @@ sub process_stdin
 {
 	while (<>) {
 		chomp;
-		print "$_\n";
+		my ($str, $ellipsis, $desired_length) = split /\//;
+		$str = decode('utf-8', $str);
+		$ellipsis = decode('utf-8', $ellipsis);
+		my $result = trim_tail($str, $ellipsis, $desired_length);
+		print encode('utf-8', "$result\n");
 	}
 }
 
