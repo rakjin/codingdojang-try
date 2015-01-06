@@ -49,20 +49,40 @@ sub trim_tail {
 	return join '', @result;
 }
 
+sub test {
+	is( length_considering_multibyte_character("world"), 5 );
+	is( length_considering_multibyte_character("한글"), 4 );
+	is( length_considering_multibyte_character("&#12345;"), 2 );
+	is( length_considering_multibyte_character("&#abcde;"), 8 );
+	is( length_considering_multibyte_character("&#;"), 3 );
+	is( length_considering_multibyte_character("&#&#12345;;"), 5 );
+	is( length_considering_multibyte_character("&#&#12345;;큐"), 7 );
+	is( trim_tail("12345", "..", 5), '12345');
+	is( trim_tail("한글", "..", 5), '한글');
+	is( trim_tail("한글", "..", 4), '한글');
+	is( trim_tail("한&#12345;글", "..", 6), '한&#12345;글');
+	is( trim_tail("1234567890", "..", 5), "123.." );
+	is( trim_tail("한글12345", "..", 5), "한.." );
+	is( trim_tail("123한글12345", "..", 7), "123한.." );
+	is( trim_tail("123한글12345", "..", 8), "123한.." );
+	done_testing();
+}
 
-is( length_considering_multibyte_character("world"), 5 );
-is( length_considering_multibyte_character("한글"), 4 );
-is( length_considering_multibyte_character("&#12345;"), 2 );
-is( length_considering_multibyte_character("&#abcde;"), 8 );
-is( length_considering_multibyte_character("&#;"), 3 );
-is( length_considering_multibyte_character("&#&#12345;;"), 5 );
-is( length_considering_multibyte_character("&#&#12345;;큐"), 7 );
-is( trim_tail("12345", "..", 5), '12345');
-is( trim_tail("한글", "..", 5), '한글');
-is( trim_tail("한글", "..", 4), '한글');
-is( trim_tail("한&#12345;글", "..", 6), '한&#12345;글');
-is( trim_tail("1234567890", "..", 5), "123.." );
-is( trim_tail("한글12345", "..", 5), "한.." );
-is( trim_tail("123한글12345", "..", 7), "123한.." );
-is( trim_tail("123한글12345", "..", 8), "123한.." );
-done_testing();
+sub process_stdin
+{
+	while (<>) {
+		chomp;
+		print "$_\n";
+	}
+}
+
+sub main {
+	if ( -t STDIN and not @ARGV ) {
+		test;
+	}
+	else {
+		process_stdin;
+	}
+}
+
+main;
