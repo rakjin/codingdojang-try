@@ -15,8 +15,8 @@ my $pattern = qr/$pattern_hangul|$pattern_xmlchar/;
 
 sub length_considering_multibyte_character {
 	my $str = shift;
-	$str =~ s/$pattern/AA/g;
-	return length $str;
+	my $count = $str =~ s/$pattern//g;
+	return length($str) + ($count * MULTIBYTE_CHARACTER_SIZE);
 }
 
 sub trim_tail {
