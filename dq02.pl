@@ -67,6 +67,8 @@ sub test {
 	is( trim_tail("한글12345", "..", 5), "한.." );
 	is( trim_tail("123한글12345", "..", 7), "123한.." );
 	is( trim_tail("123한글12345", "..", 8), "123한.." );
+	is( trim_tail("a한a글a한a한a", "..", 12), "a한a글a한a.." );
+	is( trim_tail("a한a글a한a한a", "(...더보기)", 12), "a(...더보기)" );
 	done_testing();
 }
 
