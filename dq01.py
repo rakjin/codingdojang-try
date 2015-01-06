@@ -51,8 +51,6 @@ def parse_and_get_first_node(raw):
 
 # visit recursively and return possible paths' count within its trials
 def visit(node, path):
-  if node in path:
-    return 0
   if node.is_destination:
     # found possible path
     return 1
