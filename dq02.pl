@@ -6,7 +6,9 @@ use warnings;
 
 use Test::More;
 
-my $pattern = qr/\p{Hangul}|&#[0-9]+;/;
+my $pattern_hangul = qr/\p{Hangul}/;
+my $pattern_xmlchar = qr/&#\d+;/;
+my $pattern = qr/$pattern_hangul|$pattern_xmlchar/;
 
 sub length_considering_multibyte_character {
 	my $str = shift;
