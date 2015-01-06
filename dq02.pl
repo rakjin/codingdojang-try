@@ -70,8 +70,7 @@ sub test {
 	done_testing();
 }
 
-sub process_stdin
-{
+sub process_stdin {
 	while (<>) {
 		chomp;
 		my ($str, $ellipsis, $desired_length) = split /\//;
