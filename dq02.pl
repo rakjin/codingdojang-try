@@ -38,13 +38,11 @@ sub trim_tail {
 			}
 			$output_length += MULTIBYTE_CHARACTER_SIZE;
 		}
-		elsif ($str =~ s/^(((?!($pattern)).)+)//) {
+		else {
+			$str =~ s/^(((?!($pattern)).)+)//;
 			my $found = substr($1, 0, $desired_length - $output_length);
 			push @result, $found;
 			$output_length += length $found;
-		}
-		else {
-			print "\t\tnot expected\n";
 		}
 	}
 	push @result, $ellipsis;
