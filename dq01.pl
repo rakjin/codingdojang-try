@@ -53,9 +53,6 @@ sub visit {
   my $node = shift;
   my $path = shift;
 
-  if (grep /^$node$/, @{$path}) {
-    return 0;
-  }
   if ($node->{"is_destination"}) {
     return 1;
   }
@@ -71,4 +68,4 @@ sub visit {
 
 my $path = [];
 my $count = visit($first_node, $path);
-print ($count);
+print "$count\n";
