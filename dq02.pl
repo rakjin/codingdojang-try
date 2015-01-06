@@ -16,6 +16,11 @@ sub length_considering_multibyte_character {
 	return length $str;
 }
 
+sub trim_tail {
+	my ($str, $ellipsis, $desired_length) = @_;
+
+	return "";
+}
 
 
 is( length_considering_multibyte_character("world"), 5 );
@@ -25,4 +30,8 @@ is( length_considering_multibyte_character("&#abcde;"), 8 );
 is( length_considering_multibyte_character("&#;"), 3 );
 is( length_considering_multibyte_character("&#&#12345;;"), 5 );
 is( length_considering_multibyte_character("&#&#12345;;큐"), 7 );
+TODO: {
+	local $TODO = "trim tail";
+	is( trim_tail("1234567890", "..", 5), "123.." );
+}
 done_testing();
