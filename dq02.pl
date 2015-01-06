@@ -12,5 +12,9 @@ sub length_considering_multibyte_character {
 
 
 
-ok( length_considering_multibyte_character("world") == 5 );
+is( length_considering_multibyte_character("world"), 5 );
+TODO: {
+	local $TODO = 'considering length of a hangul char as 2';
+	is( length_considering_multibyte_character("한글"), 4 );
+}
 done_testing();
