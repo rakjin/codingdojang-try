@@ -50,16 +50,14 @@ def parse_and_get_first_node(raw):
   return first_node
 
 # visit recursively and return possible paths' count within its trials
-def visit(node, path):
+def visit(node):
   if node.is_destination:
     # found possible path
     return 1
   count = 0
-  path.append(node)
   for adjacent in node.adjacents:
-    count += visit(adjacent, path)
+    count += visit(adjacent)
   # dead end
-  path.pop()
   return count
 
 
@@ -78,6 +76,5 @@ if __name__ == '__main__':
 
   first_node = parse_and_get_first_node(raw)
 
-  path = []
-  count = visit(first_node, path)
+  count = visit(first_node)
   print (count)
