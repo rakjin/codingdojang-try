@@ -3,4 +3,4 @@ dq-retry
 
 with python.
 
-[with perl](../../tree/perl).
+[with perl](../../tree/perl?files=1).
