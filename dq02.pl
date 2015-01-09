@@ -4,19 +4,19 @@ use utf8;
 use strict;
 use warnings;
 
+use Encode qw/encode decode/;
 use Test::More;
-use Encode qw(encode decode);
 
-use constant MULTIBYTE_CHARACTER_SIZE => 2;
-
-my $pattern_hangul = qr/\p{Hangul}/;
-my $pattern_xmlchar = qr/&#\d+;/;
-my $pattern = qr/$pattern_hangul|$pattern_xmlchar/;
+my $PATTERN_HANGUL = qr/\p{Hangul}/;
+my $PATTERN_XMLCHAR = qr/&#\d+;/;
+my $PATTERN = qr/$PATTERN_HANGUL|$PATTERN_XMLCHAR/;
+my $MULTIBYTE_CHARACTER_SIZE = 2;
 
 sub length_considering_multibyte_character {
-	my $str = shift;
-	my $count = $str =~ s/$pattern//g;
-	return length($str) + ($count * MULTIBYTE_CHARACTER_SIZE);
+	my ($str) = @_;
+
+	my $count = $str =~ s/$PATTERN//g;
+	return length($str) + ($count * $MULTIBYTE_CHARACTER_SIZE);
 }
 
 sub trim_tail {
@@ -32,14 +32,14 @@ sub trim_tail {
 	$desired_length -= $ellipsis_length;
 
 	while ($output_length < $desired_length) {
-		if ($str =~ s/^($pattern)//) {
-			if ($output_length + MULTIBYTE_CHARACTER_SIZE <= $desired_length) {
+		if ($str =~ s/^($PATTERN)//) {
+			if ($output_length + $MULTIBYTE_CHARACTER_SIZE <= $desired_length) {
 				push @result, $1;
 			}
-			$output_length += MULTIBYTE_CHARACTER_SIZE;
+			$output_length += $MULTIBYTE_CHARACTER_SIZE;
 		}
 		else {
-			$str =~ s/^(((?!($pattern)).)+)//;
+			$str =~ s/^(((?!($PATTERN)).)+)//;
 			my $found = substr($1, 0, $desired_length - $output_length);
 			push @result, $found;
 			$output_length += length $found;
@@ -83,11 +83,11 @@ sub process_stdin {
 
 sub main {
 	if ( -t STDIN and not @ARGV ) {
-		test;
+		test();
 	}
 	else {
-		process_stdin;
+		process_stdin();
 	}
 }
 
-main;
+main();
